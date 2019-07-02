@@ -1,5 +1,5 @@
 
-# engie-dataoverload-backend
+# Engie - Insight The Boxx backend
 Before starting the project run: 
 ``` npm install ```
 
