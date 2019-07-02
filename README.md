@@ -12,5 +12,6 @@ The API will start at http://localhost:9000/
 
 ## Routes
 http://localhost:9000/api/ : To check if the API is working.
+
 http://localhost:9000/api/test : Test route for displaying JSON data.
 
