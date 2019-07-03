@@ -1,5 +1,5 @@
 var express = require('express');
-const db = require('../queries/queries');
+const queries = require('../queries/queries');
 
 var router = express.Router();
 
@@ -9,13 +9,13 @@ router.get('/', function(req, res, next) {
 });
 
 /* GET */
-router.get('/test', function(req, res, next) {
-    db.getAll(req,res);
+router.get('/solar', function(req, res, next) {
+    queries.getTestQuery(req,res);
 });
 
 /* POST */
 router.post('/add', function(req, res, next) {
-    db.createTest(req,res);
+    queries.createTest(req,res);
 });
 
 module.exports = router;
