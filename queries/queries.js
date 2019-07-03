@@ -7,8 +7,12 @@ const pool = new Pool({
   port: 5432,
 })
 
-const getAll = (request, response) => {
-    pool.query('SELECT * FROM test;', (error, results) => {
+const testquery = "select * from \"BOXX_15min20k\" "
+                  "where variable = \"solar_prod\" "
+                  "order by customer_id"
+
+const getTestQuery = (request, response) => {
+    pool.query(testquery, (error, results) => {
 
       if (error) {
         throw error
@@ -35,6 +39,6 @@ const createTest = (request, response) => {
 }
 
 module.exports = {
-    getAll,
+    getTestQuery,
     createTest
 }
