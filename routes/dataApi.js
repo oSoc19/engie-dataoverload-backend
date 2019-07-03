@@ -13,6 +13,11 @@ router.get('/test', function(req, res, next) {
     db.getAll(req,res);
 });
 
+/* All averages */
+router.get('/allaverages', function(req, res, next) {
+    db.getAverages(req,res);
+});
+
 /* POST */
 router.post('/add', function(req, res, next) {
     db.createTest(req,res);
