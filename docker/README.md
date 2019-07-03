@@ -12,9 +12,13 @@ Run the docker image:
 ## Connection for dev
 
 Host: localhost
+
 Port: 5432
+
 Database: docker
+
 User: docker
+
 password: docker
 
 ## Problems:
