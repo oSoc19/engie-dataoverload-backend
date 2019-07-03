@@ -1,4 +1,6 @@
 var express = require('express');
+const db = require('../queries/queries');
+
 var router = express.Router();
 
 /* Test API */
@@ -8,11 +10,12 @@ router.get('/', function(req, res, next) {
 
 /* GET */
 router.get('/test', function(req, res, next) {
-    var t = [];
-    for(var i = 0; i < 30; i++){
-        t.push({i:'test'})
-    }
-    res.send(t);
+    db.getAll(req,res);
+});
+
+/* POST */
+router.post('/add', function(req, res, next) {
+    db.createTest(req,res);
 });
 
 module.exports = router;
