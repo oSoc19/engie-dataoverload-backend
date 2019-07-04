@@ -1,7 +1,7 @@
 const Pool = require('pg').Pool
 const pool = new Pool({
   user: 'docker',
-  host: 'localhost',
+  host: '192.168.99.100',
   database: 'docker',
   password: 'docker',
   port: 5432,
@@ -102,35 +102,35 @@ const getAverages = (request, response) => {
         throw error
       }
       averages = results.rows;
-      data.push({icon: iconRoomTmp, name: roomTmp, value: averages[0][roomTmp]});
+      data.push({icon: iconRoomTmp, name: roomTmp, value: averages[0][roomTmp], unit: "°C"});
     
       pool.query(avgGasCons, (error, results) => {
         if (error) {
           throw error
         }
         averages = results.rows;
-        data.push({icon: iconGasCons, name: gasCons, value: averages[0][gasCons]});
+        data.push({icon: iconGasCons, name: gasCons, value: averages[0][gasCons], unit: "m³"});
 
         pool.query(avgSolarProd, (error, results) => {
           if(error){
             throw error
           }
           averages = results.rows;
-          data.push({icon: iconSolarProd, name: solarProd, value: averages[0][solarProd]});
+          data.push({icon: iconSolarProd, name: solarProd, value: averages[0][solarProd], unit: "kWh"});
 
           pool.query(avgElecCons, (error, results) => {
             if(error){
               throw error
             }
             averages = results.rows;
-            data.push({icon: iconElecCons, name: elecCons, value: averages[0][elecCons]});
+            data.push({icon: iconElecCons, name: elecCons, value: averages[0][elecCons], unit: "kWh"});
 
             pool.query(avgElecInjec, (error, results) => {
               if(error){
                 throw error
               }
               averages = results.rows;
-              data.push({icon: iconElecInjec, name: elecInjec, value: averages[0][elecInjec]});
+              data.push({icon: iconElecInjec, name: elecInjec, value: averages[0][elecInjec], unit: "kWh"});
               
               response.status(200).send(data);
             })
