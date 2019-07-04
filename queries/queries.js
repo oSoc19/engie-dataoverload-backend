@@ -1,7 +1,7 @@
 const Pool = require('pg').Pool
 const pool = new Pool({
   user: 'docker',
-  host: 'localhost',
+  host: '192.168.99.100',
   database: 'docker',
   password: 'docker',
   port: 5432,
@@ -73,12 +73,18 @@ const getSolarAndNonSolarConsumption = (request, response) => {
 const getAverages = (request, response) => {
     let averages;
     let data = [];
-    let iconStr = "fas fa-fire";
+    let iconRoomTmp = "fas fa-thermometer-half";
+    let iconGasCons = "fas fa-burn";
+    let iconSolarProd = "fas fa-solar-panel";
+    let iconElecCons = "fas fa-bolt";
+    let iconElecInjec = "fas fa-plug";
+
     let roomTmp = "Average room temperature";
     let gasCons = "Average gas consumption";
     let solarProd = "Average solar production";
     let elecCons = "Average electricity consumption";
     let elecInjec = "Average electricity injection";
+
     let avgRoomTemp = 'SELECT AVG(value) AS "Average room temperature"' + 
                       'FROM "BOXX_15min20k" WHERE variable = \'room_temp\';';
     let avgGasCons = 'SELECT AVG(value) AS "Average gas consumption"' + 
@@ -97,35 +103,35 @@ const getAverages = (request, response) => {
         throw error
       }
       averages = results.rows;
-      data.push({icon: iconStr, name: roomTmp, value: averages[0][roomTmp]});
+      data.push({icon: iconRoomTmp, name: roomTmp, value: averages[0][roomTmp], unit: "°C"});
     
       pool.query(avgGasCons, (error, results) => {
         if (error) {
           throw error
         }
         averages = results.rows;
-        data.push({icon: iconStr, name: gasCons, value: averages[0][gasCons]});
+        data.push({icon: iconGasCons, name: gasCons, value: averages[0][gasCons], unit: "m³"});
 
         pool.query(avgSolarProd, (error, results) => {
           if(error){
             throw error
           }
           averages = results.rows;
-          data.push({icon: iconStr, name: solarProd, value: averages[0][solarProd]});
+          data.push({icon: iconSolarProd, name: solarProd, value: averages[0][solarProd], unit: "kWh"});
 
           pool.query(avgElecCons, (error, results) => {
             if(error){
               throw error
             }
             averages = results.rows;
-            data.push({icon: iconStr, name: elecCons, value: averages[0][elecCons]});
+            data.push({icon: iconElecCons, name: elecCons, value: averages[0][elecCons], unit: "kWh"});
 
             pool.query(avgElecInjec, (error, results) => {
               if(error){
                 throw error
               }
               averages = results.rows;
-              data.push({icon: iconStr, name: elecInjec, value: averages[0][elecInjec]});
+              data.push({icon: iconElecInjec, name: elecInjec, value: averages[0][elecInjec], unit: "kWh"});
               
               response.status(200).send(data);
             })
