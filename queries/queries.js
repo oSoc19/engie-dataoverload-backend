@@ -150,7 +150,6 @@ const createTest = (request, response) => {
 }
 
 module.exports = {
-    getAll,
     createTest,
     getAverages,
     getTestQuery,
