@@ -1,7 +1,7 @@
 const Pool = require('pg').Pool
 const pool = new Pool({
   user: 'docker',
-  host: '192.168.99.100',
+  host: 'localhost',
   database: 'docker',
   password: 'docker',
   port: 5432,
@@ -20,8 +20,14 @@ const getAll = (request, response) => {
 };
 
 const getAverages = (request, response) => {
-    let averages = [];
-    let dataTmp;
+    let averages;
+    let data = [];
+    let iconStr = "fas fa-fire";
+    let roomTmp = "Average room temperature";
+    let gasCons = "Average gas consumption";
+    let solarProd = "Average solar production";
+    let elecCons = "Average electricity consumption";
+    let elecInjec = "Average electricity injection";
     let avgRoomTemp = 'SELECT AVG(value) AS "Average room temperature"' + 
                       'FROM "BOXX_15min20k" WHERE variable = \'room_temp\';';
     let avgGasCons = 'SELECT AVG(value) AS "Average gas consumption"' + 
@@ -39,38 +45,38 @@ const getAverages = (request, response) => {
       if (error) {
         throw error
       }
-      dataTmp = results.rows;
-      averages.push(dataTmp);
+      averages = results.rows;
+      data.push({icon: iconStr, name: roomTmp, value: averages[0][roomTmp]});
     
       pool.query(avgGasCons, (error, results) => {
         if (error) {
           throw error
         }
-        dataTmp = results.rows;
-        averages.push(dataTmp);
+        averages = results.rows;
+        data.push({icon: iconStr, name: gasCons, value: averages[0][gasCons]});
 
         pool.query(avgSolarProd, (error, results) => {
           if(error){
             throw error
           }
-          dataTmp = results.rows;
-          averages.push(dataTmp);
+          averages = results.rows;
+          data.push({icon: iconStr, name: solarProd, value: averages[0][solarProd]});
 
           pool.query(avgElecCons, (error, results) => {
             if(error){
               throw error
             }
-            dataTmp = results.rows;
-            averages.push(dataTmp);
+            averages = results.rows;
+            data.push({icon: iconStr, name: elecCons, value: averages[0][elecCons]});
 
             pool.query(avgElecInjec, (error, results) => {
               if(error){
                 throw error
               }
-              dataTmp = results.rows;
-              averages.push(dataTmp);
+              averages = results.rows;
+              data.push({icon: iconStr, name: elecInjec, value: averages[0][elecInjec]});
               
-              response.status(200).send(averages);
+              response.status(200).send(data);
             })
           })
         })
