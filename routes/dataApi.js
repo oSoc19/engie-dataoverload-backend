@@ -15,7 +15,7 @@ router.get('/solar', function(req, res, next) {
 
 /* All averages */
 router.get('/allaverages', function(req, res, next) {
-    db.getAverages(req,res);
+    queries.getAverages(req,res);
 });
 
 /* POST */
