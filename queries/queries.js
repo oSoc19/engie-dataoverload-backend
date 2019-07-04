@@ -1,7 +1,7 @@
 const Pool = require('pg').Pool
 const pool = new Pool({
   user: 'docker',
-  host: '192.168.99.100',
+  host: 'localhost',
   database: 'docker',
   password: 'docker',
   port: 5432,
@@ -28,9 +28,10 @@ const avg_elec_cons_daily_solar =
  where t1.variable = 'elec_cons_lt' or t1.variable = 'elec_cons_ht'\
  group by date(t1.timestamp_begin)"
 
-const getTestQuery = (request, response) => {
+const getSolarAndNonSolarConsumption = (request, response) => {
   var solar_data; 
   var nonsolar_data;
+  // final output data contain entries with date, solar-cons, nonsolar-cons
   var api_data = [];
   const length_date_format = 15; // |Thu Apr 05 2018| = 15
 
@@ -152,5 +153,5 @@ const createTest = (request, response) => {
 module.exports = {
     createTest,
     getAverages,
-    getTestQuery,
+    getSolarAndNonSolarConsumption,
 }

@@ -10,7 +10,7 @@ router.get('/', function(req, res, next) {
 
 /* GET */
 router.get('/solar', function(req, res, next) {
-    queries.getTestQuery(req,res);
+    queries.getSolarAndNonSolarConsumption(req,res);
 });
 
 /* All averages */
