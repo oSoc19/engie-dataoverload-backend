@@ -1,4 +1,4 @@
-# Engie - Insight The Boxx backend
+# Engie - Insight The boxx backend
 Before starting the project run: 
 ``` npm install ```
 
