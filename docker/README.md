@@ -24,7 +24,7 @@ password: docker
 ## Problems:
 When the port is already allocated: 
 
-```netstat | grep 5432```
+```sudo lsof -i -P -n | grep 5432```
 
 Get the process ID and kill the process:
 ```kill -9 ID```
