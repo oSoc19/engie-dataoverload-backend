@@ -9,6 +9,11 @@ Run the docker image:
 
 ```docker run --rm -P --name pg_test -d -p 5432:5432 eg_postgresql```
 
+
+To start the existing docker container use (this wont remove the data from the container):
+
+```docker start pg_test```
+
 ## Connection for dev
 
 Host: localhost
