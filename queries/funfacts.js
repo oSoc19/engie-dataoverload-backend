@@ -16,71 +16,77 @@ const getAverages = (request, response) => {
   let iconSolarProd = "fas fa-solar-panel";
   let iconElecCons = "fas fa-bolt";
   let iconElecInjec = "fas fa-plug";
-  let iconWaterCons= "TODO";
+  let iconWaterCons = "fas fa-tint";
 
   let roomTmp = "Average room temperature";
-  let gasCons = "Average gas consumption";
-  let solarProd = "Average solar production";
-  let elecCons = "Average electricity consumption";
-  let elecInjec = "Average electricity injection";
-  let waterCons = "Average water consumption";
+  let gasCons = "Average yearly gas consumption";
+  let solarProd = "Average daily solar production";
+  let elecCons = "Average yearly electricity consumption";
+  let elecInjec = "Average daily electricity injection";
+  let waterCons = "Average yearly water consumption";
 
-  let avgRoomTemp = 'SELECT AVG(value) AS "Average room temperature"' + 
-                    'FROM "room_temp";';
-  let avgGasCons = 'SELECT AVG(value) AS "Average gas consumption"' + 
-                   'FROM "gas_cons";';
-  let avgSolarProd = 'SELECT AVG(value) AS "Average solar production"' + 
-                     'FROM "solar_prod";';
-  let avgElecCons = 'SELECT AVG(value) AS "Average electricity consumption"' + 
-                    'FROM "elec_cons";';
-  let avgElecInjec = 'SELECT AVG(value) AS "Average electricity injection"' + 
-                    'FROM "elec_inje";';
-  let avgWaterCons = 'SELECT AVG(value) AS "Average water consumption"' + 
-                   'FROM "water_cons";';           
+  let avgRoomTemp = 'select avg(value) as "Average room temperature" from room_temp_day';
+  let avgGasCons = 'select sum(cons_sum)/count(cons_sum)*365 as "Average yearly gas consumption"\
+                   from (select sum(value)/count(*) as cons_sum\
+                   , customer_id from gas_cons_day group by customer_id) as sub_sum_query';
+  let avgSolarProd = 'select sum(cons_sum)/count(cons_sum) as "Average daily solar production"\
+                     from (select sum(value)/count(*) as cons_sum\
+                     , customer_id from solar_prod_day group by customer_id) as sub_sum_query';
+  let avgElecCons = 'select sum(cons_sum)/count(cons_sum)*365 as "Average yearly electricity consumption"\
+                    from (select sum(value)/count(*) as cons_sum\
+                    , customer_id from elec_cons_day group by customer_id) as sub_sum_query';
 
-  pool.query(avgRoomTemp, (error, results) => {
+  let avgElecInjec = 'select sum(cons_sum)/count(cons_sum) as "Average daily electricity injection"\
+                     from (select sum(value)/count(*) as cons_sum\
+                     , customer_id from elec_inje_day group by customer_id) as sub_sum_query';
+
+  let avgWaterCons = 'select sum(cons_sum)/count(cons_sum)*365 as "Average yearly water consumption"\
+                     from (select sum(value)/count(*) as cons_sum\
+                     , customer_id from water_cons_day group by customer_id) as sub_sum_query';
+
+  pool.query(avgElecCons, (error, results) => {
     if (error) {
       throw error
     }
     averages = results.rows;
-    data.push({icon: iconRoomTmp, name: roomTmp, value: averages[0][roomTmp], unit: "°C"});
-  
+    data.push({ icon: iconElecCons, name: elecCons, value: averages[0][elecCons], unit: "kWh" });
+
     pool.query(avgGasCons, (error, results) => {
       if (error) {
         throw error
       }
       averages = results.rows;
-      data.push({icon: iconGasCons, name: gasCons, value: averages[0][gasCons], unit: "m³"});
+      data.push({ icon: iconGasCons, name: gasCons, value: averages[0][gasCons], unit: "m³" });
 
-      pool.query(avgSolarProd, (error, results) => {
-        if(error){
+      pool.query(avgWaterCons, (error, results) => {
+        if (error) {
           throw error
         }
         averages = results.rows;
-        data.push({icon: iconSolarProd, name: solarProd, value: averages[0][solarProd], unit: "kWh"});
+        data.push({ icon: iconWaterCons, name: waterCons, value: averages[0][waterCons], unit: "m³" });
 
-        pool.query(avgElecCons, (error, results) => {
-          if(error){
+        pool.query(avgRoomTemp, (error, results) => {
+          if (error) {
             throw error
           }
           averages = results.rows;
-          data.push({icon: iconElecCons, name: elecCons, value: averages[0][elecCons], unit: "kWh"});
+          data.push({ icon: iconRoomTmp, name: roomTmp, value: averages[0][roomTmp], unit: "°C" });
 
-          pool.query(avgElecInjec, (error, results) => {
-            if(error){
+          pool.query(avgSolarProd, (error, results) => {
+            if (error) {
               throw error
             }
             averages = results.rows;
-            data.push({icon: iconElecInjec, name: elecInjec, value: averages[0][elecInjec], unit: "kWh"});
-            
-            pool.query(avgWaterCons, (error, results) => {
-              if(error){
+            data.push({ icon: iconSolarProd, name: solarProd, value: averages[0][solarProd], unit: "kWh" });
+
+            pool.query(avgElecInjec, (error, results) => {
+              if (error) {
                 throw error
               }
               averages = results.rows;
-              data.push({icon: iconWaterCons, name: waterCons, value: averages[0][waterCons], unit: "m³"});
+              data.push({ icon: iconElecInjec, name: elecInjec, value: averages[0][elecInjec], unit: "kWh" });
 
-            response.status(200).send(data);
+              response.status(200).send(data);
             })
           })
         })
@@ -91,7 +97,7 @@ const getAverages = (request, response) => {
 
 const createTest = (request, response) => {
   console.log(request.query);
-  
+
   const { testid, texttest } = request.query;
 
   pool.query('insert into test(testid, texttest) VALUES ($1, $2)', [testid, texttest], (error, results) => {
@@ -99,12 +105,12 @@ const createTest = (request, response) => {
       throw error
     }
     //console.log(results);
-    
+
     response.status(201).send(request.query)
   })
 }
 
 module.exports = {
-    createTest,
-    getAverages,
+  createTest,
+  getAverages,
 }
