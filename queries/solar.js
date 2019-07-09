@@ -28,32 +28,59 @@ const avg_elec_cons_daily_solar =
  where t1.variable = 'elec_cons_lt' or t1.variable = 'elec_cons_ht'\
  group by date(t1.timestamp_begin)"
 
-const solar_cons_daily =
-"select sum(value) as sum, extract(day from timestamp_begin) as day from \"BOXX_15min20k\"\
-where variable = 'solar_prod'\
-group by extract(day from timestamp_begin)"
+const elec_cons_solar_monthly =
+"SELECT extract(month from elec_t.date) as month, sum(elec_t.value)/count(elec_t.customer_id) as avg_cons_solar \
+from elec_cons_day elec_t \
+inner join\
+(SELECT customer_id \
+from solar_prod_day \
+group by customer_id) solar_t \
+on elec_t.customer_id = solar_t.customer_id \
+group by month \
+order by month"
 
+const elec_cons_nonsolar_monthly =
+"SELECT extract(month from elec_t.date) as month, sum(elec_t.value)/count(elec_t.customer_id) as avg_cons_nonsolar \
+from elec_cons_day elec_t \
+inner join\
+(SELECT customer_id \
+from elec_cons_day \
+group by customer_id \
+except \
+select customer_id \
+from solar_prod_day \
+group by customer_id) non_solar_t \
+on elec_t.customer_id = non_solar_t.customer_id \
+group by month \
+order by month"
 
-const getSolarDaily = (request, response) => {
-  var solar_data; 
+const getSolarMonthly = (request, response) => {
   var nonsolar_data;
   // final output data contain entries with date, solar-cons, nonsolar-cons
-  var api_data = [];
+  var api_data;
   const length_date_format = 15; // |Thu Apr 05 2018| = 15
 
-  pool.query(solar_cons_daily, (error, results) => {
+  pool.query(elec_cons_solar_monthly, (error, results) => {
     if (error) {
       throw error
     }
-    // solar_data = results.rows;
-    // var itr_date; 
-    // var itr_cons;
-    // for (item of solar_data) {
-    //   itr_date = item["date"].toString();
-    //   itr_date = itr_date.substring(0,length_date_format);
-    //   itr_cons = item["avg_cons"];
-    //   api_data.push({date: itr_date, avg_cons_solar: itr_cons});
-  response.status(200).send(results.rows);
+    api_data = results.rows;
+    console.log(api_data);
+    pool.query(elec_cons_nonsolar_monthly, (error, results) => {
+      if (error) {
+        throw error
+      }
+      nonsolar_data = results.rows;
+      for (item of nonsolar_data) {
+        console.log(item["month"]);
+        for (i = 0; i < api_data.length; i++) {
+          if (api_data[i]["month"] === item["month"]) {
+            api_data[i].avg_cons_nonsolar = item["avg_cons_nonsolar"];
+          }
+        } 
+      }
+    response.status(200).send(api_data);
+    })
   })
 };
 
@@ -100,6 +127,6 @@ const getSolarAndNonSolarConsumption = (request, response) => {
 };
 
 module.exports = {
-  getSolarDaily,
+  getSolarMonthly,
   getSolarAndNonSolarConsumption,
 }
