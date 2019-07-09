@@ -54,11 +54,37 @@ on elec_t.customer_id = non_solar_t.customer_id \
 group by datepart \
 order by datepart"
 
+const elec_cons_solar_weekly =
+"SELECT extract(week from elec_t.date) as datepart, sum(elec_t.value)/count(elec_t.customer_id) as avg_cons_solar \
+from elec_cons_day elec_t \
+inner join\
+(SELECT customer_id \
+from solar_prod_day \
+group by customer_id) solar_t \
+on elec_t.customer_id = solar_t.customer_id \
+group by datepart \
+order by datepart"
+
+const elec_cons_nonsolar_weekly =
+"SELECT extract(week from elec_t.date) as datepart, sum(elec_t.value)/count(elec_t.customer_id) as avg_cons_nonsolar \
+from elec_cons_day elec_t \
+inner join\
+(SELECT customer_id \
+from elec_cons_day \
+group by customer_id \
+except \
+select customer_id \
+from solar_prod_day \
+group by customer_id) non_solar_t \
+on elec_t.customer_id = non_solar_t.customer_id \
+group by datepart \
+order by datepart"
+
+
 const getSolarMonthly = (request, response) => {
   var nonsolar_data;
   // final output data contain entries with date, solar-cons, nonsolar-cons
   var api_data;
-  const length_date_format = 15; // |Thu Apr 05 2018| = 15
 
   pool.query(elec_cons_solar_monthly, (error, results) => {
     if (error) {
@@ -67,6 +93,36 @@ const getSolarMonthly = (request, response) => {
     api_data = results.rows;
     console.log(api_data);
     pool.query(elec_cons_nonsolar_monthly, (error, results) => {
+      if (error) {
+        throw error
+      }
+      nonsolar_data = results.rows;
+      for (item of nonsolar_data) {
+        console.log(item["datepart"]);
+        for (i = 0; i < api_data.length; i++) {
+          if (api_data[i]["datepart"] === item["datepart"]) {
+            api_data[i].avg_cons_nonsolar = item["avg_cons_nonsolar"];
+          }
+        } 
+      }
+    response.status(200).send(api_data);
+    })
+  })
+};
+
+const getSolarWeekly = (request, response) => {
+  var nonsolar_data;
+  // final output data contain entries with date, solar-cons, nonsolar-cons
+  var api_data;
+  const length_date_format = 15; // |Thu Apr 05 2018| = 15
+
+  pool.query(elec_cons_solar_weekly, (error, results) => {
+    if (error) {
+      throw error
+    }
+    api_data = results.rows;
+    console.log(api_data);
+    pool.query(elec_cons_nonsolar_weekly, (error, results) => {
       if (error) {
         throw error
       }
@@ -128,5 +184,6 @@ const getSolarAndNonSolarConsumption = (request, response) => {
 
 module.exports = {
   getSolarMonthly,
+  getSolarWeekly,
   getSolarAndNonSolarConsumption,
 }
