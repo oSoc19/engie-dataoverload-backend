@@ -8,6 +8,7 @@ var indexRouter = require('./routes/index');
 var testapiRouter = require('./routes/test_api.js');
 var funfactsRouter = require('./routes/funfacts');
 var solarRouter = require('./routes/solar');
+var quizRouter = require('./routes/quiz');
 
 var app = express();
 
@@ -34,6 +35,7 @@ app.use('/', indexRouter);
 app.use('/api', testapiRouter);
 app.use('/api', funfactsRouter);
 app.use('/api', solarRouter);
+app.use('/api', quizRouter);
 
 
 // catch 404 and forward to error handler
