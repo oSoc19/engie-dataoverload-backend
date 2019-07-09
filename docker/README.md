@@ -7,7 +7,12 @@ Build the docker image:
 
 Run the docker image:
 
-```docker run --rm -P --name pg_test -d -p 5432:5432 eg_postgresql```
+```docker start pg_test -p 5432:5432 eg_postgresql```
+
+
+To start the existing docker container use (this wont remove the data from the container):
+
+```docker start pg_test```
 
 ## Connection for dev
 
@@ -24,7 +29,7 @@ password: docker
 ## Problems:
 When the port is already allocated: 
 
-```netstat | grep 5432```
+```sudo lsof -i -P -n | grep 5432```
 
 Get the process ID and kill the process:
 ```kill -9 ID```
