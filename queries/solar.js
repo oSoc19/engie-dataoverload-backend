@@ -29,18 +29,18 @@ const avg_elec_cons_daily_solar =
  group by date(t1.timestamp_begin)"
 
 const elec_cons_solar_monthly =
-"SELECT extract(month from elec_t.date) as month, sum(elec_t.value)/count(elec_t.customer_id) as avg_cons_solar \
+"SELECT extract(month from elec_t.date) as datepart, sum(elec_t.value)/count(elec_t.customer_id) as avg_cons_solar \
 from elec_cons_day elec_t \
 inner join\
 (SELECT customer_id \
 from solar_prod_day \
 group by customer_id) solar_t \
 on elec_t.customer_id = solar_t.customer_id \
-group by month \
-order by month"
+group by datepart \
+order by datepart"
 
 const elec_cons_nonsolar_monthly =
-"SELECT extract(month from elec_t.date) as month, sum(elec_t.value)/count(elec_t.customer_id) as avg_cons_nonsolar \
+"SELECT extract(month from elec_t.date) as datepart, sum(elec_t.value)/count(elec_t.customer_id) as avg_cons_nonsolar \
 from elec_cons_day elec_t \
 inner join\
 (SELECT customer_id \
@@ -51,8 +51,8 @@ select customer_id \
 from solar_prod_day \
 group by customer_id) non_solar_t \
 on elec_t.customer_id = non_solar_t.customer_id \
-group by month \
-order by month"
+group by datepart \
+order by datepart"
 
 const getSolarMonthly = (request, response) => {
   var nonsolar_data;
@@ -72,9 +72,9 @@ const getSolarMonthly = (request, response) => {
       }
       nonsolar_data = results.rows;
       for (item of nonsolar_data) {
-        console.log(item["month"]);
+        console.log(item["datepart"]);
         for (i = 0; i < api_data.length; i++) {
-          if (api_data[i]["month"] === item["month"]) {
+          if (api_data[i]["datepart"] === item["datepart"]) {
             api_data[i].avg_cons_nonsolar = item["avg_cons_nonsolar"];
           }
         } 
