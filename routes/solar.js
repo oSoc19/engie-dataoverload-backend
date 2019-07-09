@@ -9,7 +9,7 @@ router.get('/solar', function(req, res, next) {
 });
 
 router.get('/solar/daily', function(req, res, next) {
-    queries.getSolarMonthly(req,res);
+    queries.getSolarDaily(req,res);
 });
 
 router.get('/solar/weekly', function(req, res, next) {
