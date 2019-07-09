@@ -9,72 +9,84 @@ const pool = new Pool({
 
 
 const getAverages = (request, response) => {
-    let averages;
-    let data = [];
-    let iconRoomTmp = "fas fa-thermometer-half";
-    let iconGasCons = "fas fa-burn";
-    let iconSolarProd = "fas fa-solar-panel";
-    let iconElecCons = "fas fa-bolt";
-    let iconElecInjec = "fas fa-plug";
+  let averages;
+  let data = [];
+  let iconRoomTmp = "fas fa-thermometer-half";
+  let iconGasCons = "fas fa-burn";
+  let iconSolarProd = "fas fa-solar-panel";
+  let iconElecCons = "fas fa-bolt";
+  let iconElecInjec = "fas fa-plug";
+  let iconWaterCons= "TODO";
 
-    let roomTmp = "Average room temperature";
-    let gasCons = "Average gas consumption";
-    let solarProd = "Average solar production";
-    let elecCons = "Average electricity consumption";
-    let elecInjec = "Average electricity injection";
+  let roomTmp = "Average room temperature";
+  let gasCons = "Average gas consumption";
+  let solarProd = "Average solar production";
+  let elecCons = "Average electricity consumption";
+  let elecInjec = "Average electricity injection";
+  let waterCons = "Average water consumption";
 
-    let avgRoomTemp = 'SELECT AVG(value) AS "Average room temperature"' + 
-                      'FROM "room_temp";';
-    let avgGasCons = 'SELECT AVG(value) AS "Average gas consumption"' + 
-                     'FROM "gas_cons";';
-    let avgSolarProd = 'SELECT AVG(value) AS "Average solar production"' + 
-                       'FROM "solar_prod";';
-    let avgElecCons = 'SELECT AVG(value) AS "Average electricity consumption"' + 
-                      'FROM "elec_cons";';
-    let avgElecInjec = 'SELECT AVG(value) AS "Average electricity injection"' + 
-                      'FROM "elec_inje";';               
+  let avgRoomTemp = 'SELECT AVG(value) AS "Average room temperature"' + 
+                    'FROM "room_temp";';
+  let avgGasCons = 'SELECT AVG(value) AS "Average gas consumption"' + 
+                   'FROM "gas_cons";';
+  let avgSolarProd = 'SELECT AVG(value) AS "Average solar production"' + 
+                     'FROM "solar_prod";';
+  let avgElecCons = 'SELECT AVG(value) AS "Average electricity consumption"' + 
+                    'FROM "elec_cons";';
+  let avgElecInjec = 'SELECT AVG(value) AS "Average electricity injection"' + 
+                    'FROM "elec_inje";';
+  let avgWaterCons = 'SELECT AVG(value) AS "Average water consumption"' + 
+                   'FROM "water_cons";';           
 
-    pool.query(avgRoomTemp, (error, results) => {
+  pool.query(avgRoomTemp, (error, results) => {
+    if (error) {
+      throw error
+    }
+    averages = results.rows;
+    data.push({icon: iconRoomTmp, name: roomTmp, value: averages[0][roomTmp], unit: "°C"});
+  
+    pool.query(avgGasCons, (error, results) => {
       if (error) {
         throw error
       }
       averages = results.rows;
-      data.push({icon: iconRoomTmp, name: roomTmp, value: averages[0][roomTmp], unit: "°C"});
-    
-      pool.query(avgGasCons, (error, results) => {
-        if (error) {
+      data.push({icon: iconGasCons, name: gasCons, value: averages[0][gasCons], unit: "m³"});
+
+      pool.query(avgSolarProd, (error, results) => {
+        if(error){
           throw error
         }
         averages = results.rows;
-        data.push({icon: iconGasCons, name: gasCons, value: averages[0][gasCons], unit: "m³"});
+        data.push({icon: iconSolarProd, name: solarProd, value: averages[0][solarProd], unit: "kWh"});
 
-        pool.query(avgSolarProd, (error, results) => {
+        pool.query(avgElecCons, (error, results) => {
           if(error){
             throw error
           }
           averages = results.rows;
-          data.push({icon: iconSolarProd, name: solarProd, value: averages[0][solarProd], unit: "kWh"});
+          data.push({icon: iconElecCons, name: elecCons, value: averages[0][elecCons], unit: "kWh"});
 
-          pool.query(avgElecCons, (error, results) => {
+          pool.query(avgElecInjec, (error, results) => {
             if(error){
               throw error
             }
             averages = results.rows;
-            data.push({icon: iconElecCons, name: elecCons, value: averages[0][elecCons], unit: "kWh"});
-
-            pool.query(avgElecInjec, (error, results) => {
+            data.push({icon: iconElecInjec, name: elecInjec, value: averages[0][elecInjec], unit: "kWh"});
+            
+            pool.query(avgWaterCons, (error, results) => {
               if(error){
                 throw error
               }
               averages = results.rows;
-              data.push({icon: iconElecInjec, name: elecInjec, value: averages[0][elecInjec], unit: "kWh"});
-              
-              response.status(200).send(data);
+              data.push({icon: iconWaterCons, name: waterCons, value: averages[0][waterCons], unit: "m³"});
+
+            response.status(200).send(data);
             })
           })
         })
       })
     })
+  })
 };
 
 const createTest = (request, response) => {
