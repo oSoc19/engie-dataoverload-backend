@@ -1,7 +1,7 @@
 const Pool = require('pg').Pool
 const pool = new Pool({
   user: 'docker',
-  host: '192.168.99.100',
+  host: 'localhost',
   database: 'docker',
   password: 'docker',
   port: 5432,
@@ -86,17 +86,15 @@ const getAverages = (request, response) => {
     let elecInjec = "Average electricity injection";
 
     let avgRoomTemp = 'SELECT AVG(value) AS "Average room temperature"' + 
-                      'FROM "BOXX_15min20k" WHERE variable = \'room_temp\';';
+                      'FROM "room_temp";';
     let avgGasCons = 'SELECT AVG(value) AS "Average gas consumption"' + 
-                     'FROM "BOXX_15min20k" WHERE variable = \'gas_cons\';';
+                     'FROM "gas_cons";';
     let avgSolarProd = 'SELECT AVG(value) AS "Average solar production"' + 
-                       'FROM "BOXX_15min20k" WHERE variable = \'solar_prod\';';
+                       'FROM "solar_prod";';
     let avgElecCons = 'SELECT AVG(value) AS "Average electricity consumption"' + 
-                      'FROM "BOXX_15min20k" WHERE variable = \'elec_cons_lt\'' +
-                      'OR variable = \'elec_cons_ht\';';
+                      'FROM "elec_cons";';
     let avgElecInjec = 'SELECT AVG(value) AS "Average electricity injection"' + 
-                      'FROM "BOXX_15min20k" WHERE variable = \'elec_inje_lt\'' +
-                      'OR variable = \'elec_inje_ht\';';                 
+                      'FROM "elec_inje";';               
 
     pool.query(avgRoomTemp, (error, results) => {
       if (error) {
