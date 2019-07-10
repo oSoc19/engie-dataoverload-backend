@@ -1,5 +1,6 @@
 var express = require('express');
 const quiz = require('../control/quiz');
+const queries = require('../queries/quiz');
 
 var router = express.Router();
 
@@ -8,8 +9,7 @@ router.get('/quiz', function(req, res, next) {
 });
 
 router.get('/solarzip/:id', function(req, res, next) {
-    let zip = req.params.id;
-    res.send("zip: "+zip);
+    queries.getSolarProdZip(req,res);
 });
 
 module.exports = router;
