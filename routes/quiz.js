@@ -12,4 +12,6 @@ router.get('/solarzip/:id', function(req, res, next) {
     queries.getSolarProdZip(req,res);
 });
 
+
+
 module.exports = router;
