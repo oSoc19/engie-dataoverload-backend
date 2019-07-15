@@ -24,6 +24,13 @@ const getAverages = (request, response) => {
   let elecCons = "Average yearly electricity consumption";
   let elecInjec = "Average daily electricity injection";
   let waterCons = "Average yearly water consumption";
+  
+  let roundRoomTemp = 2;
+  let roundGasCons = 0;
+  let roundSolarProd = 2;
+  let roundElecCons = 0;
+  let roundElecInjec = 3;
+  let roundWaterCons = 2;
 
   let avgRoomTemp = 'select avg(value) as "Average room temperature" from room_temp_day';
   let avgGasCons = 'select sum(cons_sum)/count(cons_sum)*365 as "Average yearly gas consumption"\
@@ -49,42 +56,42 @@ const getAverages = (request, response) => {
       throw error
     }
     averages = results.rows;
-    data.push({ icon: iconElecCons, name: elecCons, value: averages[0][elecCons], unit: "kWh" });
+    data.push({ icon: iconElecCons, name: elecCons, value: averages[0][elecCons], unit: "kWh", precision: roundElecCons });
 
     pool.query(avgGasCons, (error, results) => {
       if (error) {
         throw error
       }
       averages = results.rows;
-      data.push({ icon: iconGasCons, name: gasCons, value: averages[0][gasCons], unit: "m³" });
+      data.push({ icon: iconGasCons, name: gasCons, value: averages[0][gasCons], unit: "m³", precision: roundGasCons });
 
       pool.query(avgWaterCons, (error, results) => {
         if (error) {
           throw error
         }
         averages = results.rows;
-        data.push({ icon: iconWaterCons, name: waterCons, value: averages[0][waterCons], unit: "m³" });
+        data.push({ icon: iconWaterCons, name: waterCons, value: averages[0][waterCons], unit: "m³", precision: roundWaterCons });
 
         pool.query(avgRoomTemp, (error, results) => {
           if (error) {
             throw error
           }
           averages = results.rows;
-          data.push({ icon: iconRoomTmp, name: roomTmp, value: averages[0][roomTmp], unit: "°C" });
+          data.push({ icon: iconRoomTmp, name: roomTmp, value: averages[0][roomTmp], unit: "°C", precision: roundRoomTemp });
 
           pool.query(avgSolarProd, (error, results) => {
             if (error) {
               throw error
             }
             averages = results.rows;
-            data.push({ icon: iconSolarProd, name: solarProd, value: averages[0][solarProd], unit: "kWh" });
+            data.push({ icon: iconSolarProd, name: solarProd, value: averages[0][solarProd], unit: "kWh", precision: roundSolarProd });
 
             pool.query(avgElecInjec, (error, results) => {
               if (error) {
                 throw error
               }
               averages = results.rows;
-              data.push({ icon: iconElecInjec, name: elecInjec, value: averages[0][elecInjec], unit: "kWh" });
+              data.push({ icon: iconElecInjec, name: elecInjec, value: averages[0][elecInjec], unit: "kWh", precision: roundElecInjec });
 
               response.status(200).send(data);
             })
