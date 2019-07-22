@@ -85,7 +85,7 @@ const getSolarProdZip = (request, response) => {
                         console.log(smallest_distance);
                     });
 
-                    console.log(closest_zip);
+                    console.log("closest zip: ",closest_zip);
                     
                     
                     pool.query("select avg(sp.value) from solar_prod_day sp join postal_codes p on p.customer_id = sp.customer_id where p.postal_code = $1;", [closest_zip], (error, results) => {
