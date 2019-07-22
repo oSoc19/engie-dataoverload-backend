@@ -29,7 +29,7 @@ server.listen(port);
 server.on('error', onError);
 server.on('listening', onListening);
 
-server.on('uncaughtException', function (err) {
+process.on('uncaughtException', function (err) {
   console.error(err);
   console.log("Node NOT Exiting...");
 });
