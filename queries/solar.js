@@ -1,4 +1,5 @@
 var SQL = require('sql-template-strings')
+const Pool = require('pg').Pool
 
 const url = require('url')
  
