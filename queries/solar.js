@@ -1,29 +1,28 @@
 var SQL = require('sql-template-strings')
 
-const Pool = require('pg').Pool
-// const url = require('url')
-// 
-// const params = url.parse(process.env.DATABASE_URL);
-// const auth = params.auth.split(':');
-// 
-// const config = {
-//   user: auth[0],
-//   password: auth[1],
-//   host: params.hostname,
-//   port: params.port,
-//   database: params.pathname.split('/')[1],
-//   ssl: true
-// };
-// 
-// const pool = new Pool(config);
-
+const url = require('url')
+ 
+const params = url.parse(process.env.DATABASE_URL);
+const auth = params.auth.split(':');
+ 
+const config = {
+   user: auth[0],
+   password: auth[1],
+   host: params.hostname,
+   port: params.port,
+   database: params.pathname.split('/')[1],
+   ssl: true
+};
+ 
+const pool = new Pool(config);
+/*
 const pool = new Pool({
   user: 'docker',
   host: 'localhost',
   database: 'docker',
   password: 'docker',
   port: 5432
-})
+})*/
 
 const avg_elec_cons_daily_solar = 
  "select sum(t1.value)/count(t1.customer_id) as avg_cons, date(t1.timestamp_begin)\
