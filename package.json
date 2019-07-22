@@ -19,6 +19,7 @@
     "nodemon": "^1.19.1",
     "pg": "^7.11.0",
     "request": "^2.88.0",
-    "typescript": "^3.5.2"
+    "typescript": "^3.5.2",
+    "sql-template-strings": "^2.2.2"
   }
 }
