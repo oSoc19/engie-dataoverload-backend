@@ -1,5 +1,5 @@
 var express = require('express');
-const db = require('../queries/queries');
+const queries = require('../queries/funfacts');
 
 var router = express.Router();
 
@@ -8,14 +8,9 @@ router.get('/', function(req, res, next) {
     res.send("API is working properly");
 });
 
-/* GET */
-router.get('/test', function(req, res, next) {
-    db.getAll(req,res);
-});
-
 /* POST */
 router.post('/add', function(req, res, next) {
-    db.createTest(req,res);
+    queries.createTest(req,res);
 });
 
 module.exports = router;
