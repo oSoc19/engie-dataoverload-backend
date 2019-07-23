@@ -1,5 +1,4 @@
 var express = require('express');
-const quiz = require('../control/quiz');
 const queries = require('../queries/quiz');
 
 var router = express.Router();
