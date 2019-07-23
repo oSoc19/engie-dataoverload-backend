@@ -9,6 +9,8 @@ This will start the API using nodemon. Using nodemon your process will automatic
 
 The API will start at http://localhost:9000/
 
+If you want to use docker for your PostgreSQL database, follow the instructions in the README.md in the docker folder.
+
 ## Routes
 
 http://localhost:9000/api/ : GET - To check if the API is working.
