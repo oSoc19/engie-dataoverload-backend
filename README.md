@@ -33,21 +33,31 @@ http://localhost:9000/api/solarzip/:id : GET - To get the average solar producti
 
 **_funfact.js_**  :
 
-  -avgRoomTemp : Returns the average room temperature from the room temperature table (ordered by day)
-  -avgGasCons : Returns the average yearly gas consumption from the gas_cons_day table (ordered by day)
-  -avgWaterCons : Returns the average yearly water consumption from the water_cons_day table (ordered by day)
-  -avgElecCons : Returns the average yearly electric consumption from the elec_cons_day table (ordered by day)
-  -avgElecInjec : Returns the average yearly electric injection from the elec_inje_day table (ordered by day)
-  -avgSolarProd : Returns the average yearly gas consumption from the solar_prod_day table (ordered by day)
+  - avgRoomTemp : Returns the average room temperature from the room temperature table (ordered by day)
+  
+  - avgGasCons : Returns the average yearly gas consumption from the gas_cons_day table (ordered by day)
+  
+  - avgWaterCons : Returns the average yearly water consumption from the water_cons_day table (ordered by day)
+  
+  - avgElecCons : Returns the average yearly electric consumption from the elec_cons_day table (ordered by day)
+  
+  - avgElecInjec : Returns the average yearly electric injection from the elec_inje_day table (ordered by day)
+  
+  - avgSolarProd : Returns the average yearly gas consumption from the solar_prod_day table (ordered by day)
   
 **_solar.js_**  :
 
-  -elec_cons_solar_monthly : Returns the
-  -elec_cons_nonsolar_monthly :
-  -elec_cons_solar_weekly :
-  -elec_cons_nonsolar_weekly :
-  -elec_cons_solar_daily :
-  -elec_cons_nonsolar_daily :
+  - elec_cons_solar_monthly : Returns the
+  
+  - elec_cons_nonsolar_monthly :
+  
+  - elec_cons_solar_weekly :
+  
+  - elec_cons_nonsolar_weekly :
+  
+  - elec_cons_solar_daily :
+  
+  - elec_cons_nonsolar_daily :
 
 ## License
 ![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)
