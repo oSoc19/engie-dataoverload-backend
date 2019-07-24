@@ -1,4 +1,7 @@
-# Insight the boxx backend
+# Engie - Insight the boxx backend
+
+The goal of this project is to deliver insights based on consumption data from consumers.
+The project took place at the Belgian edition of [Open Summer of Code 2019](https://2019.summerofcode.be/) and the data is provided by [Engie](https://www.engie-electrabel.be/fr/). 
 
 ## Installation
 Before starting the project run: 
@@ -39,17 +42,17 @@ Here is a description of all SQL queries that are implemented in files of the `q
 
 **_funfact.js_**  :
 
-  - avgRoomTemp : Returns the average room temperature from the room temperature table (ordered by day)
+  - `avgRoomTemp` Returns the average room temperature from the room temperature table (ordered by day)
   
-  - avgGasCons : Returns the average yearly gas consumption from the gas_cons_day table (ordered by day)
+  - `avgGasCons` Returns the average yearly gas consumption from the gas_cons_day table (ordered by day)
   
-  - avgWaterCons : Returns the average yearly water consumption from the water_cons_day table (ordered by day)
+  - `avgWaterCons` Returns the average yearly water consumption from the water_cons_day table (ordered by day)
   
-  - avgElecCons : Returns the average yearly electric consumption from the elec_cons_day table (ordered by day)
+  - `avgElecCons` Returns the average yearly electric consumption from the elec_cons_day table (ordered by day)
   
-  - avgElecInjec : Returns the average yearly electric injection from the elec_inje_day table (ordered by day)
+  - `avgElecInjec` Returns the average yearly electric injection from the elec_inje_day table (ordered by day)
   
-  - avgSolarProd : Returns the average yearly gas consumption from the solar_prod_day table (ordered by day)
+  - `avgSolarProd` Returns the average yearly gas consumption from the solar_prod_day table (ordered by day)
   
 **_solar.js_**  :
 
