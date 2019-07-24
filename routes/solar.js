@@ -4,10 +4,6 @@ const queries = require('../queries/solar');
 var router = express.Router();
 
 /* GET */
-router.get('/solar', function(req, res, next) {
-    queries.getSolarAndNonSolarConsumption(req,res);
-});
-
 router.get('/solar/daily', function(req, res, next) {
     queries.getSolarDaily(req,res);
 });

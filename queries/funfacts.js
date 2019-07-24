@@ -1,3 +1,4 @@
+/* Deployment and database connection pool initialization*/
 const Pool = require('pg').Pool
 const url = require('url')
  
@@ -22,6 +23,14 @@ const pool = new Pool({
   password: 'docker',
   port: 5432
 })*/
+
+/**
+ * Returns all the averages for gas, water, electricity, room temperature, electric injection and solar production
+ * All queries are asynchronous
+ * 
+ * @param {request sent from the server} request 
+ * @param {response sent back to the server} response 
+ */
 
 const getAverages = (request, response) => {
   let averages;
@@ -117,6 +126,9 @@ const getAverages = (request, response) => {
   })
 };
 
+/*
+* Test function to push value in the DB (UNUSED FUNCTION)
+*/
 const createTest = (request, response) => {
   console.log(request.query);
 
