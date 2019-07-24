@@ -1,4 +1,6 @@
-# Engie - Insight The boxx backend
+# Insight the boxx backend
+
+## Installation
 Before starting the project run: 
 ``` npm install ```
 
@@ -7,9 +9,9 @@ To start the project run:
 
 This will start the API using nodemon. Using nodemon your process will automatically restart when your code changes.
 
-The API will start at http://localhost:9000/
+The API will start at http://localhost:9000/.
 
-If you want to use docker for your PostgreSQL database, follow the instructions in the README.md in the docker folder.
+If you want to use docker for your PostgreSQL database, follow the instructions in the [README](https://github.com/oSoc19/engie-dataoverload-backend/blob/master/docker/README.md) of the `docker/` folder.
 
 ## Routes
 
@@ -32,6 +34,8 @@ http://localhost:9000/api/solar/solarzip : GET - To get the comparison of electr
 http://localhost:9000/api/solarzip/:id : GET - To get the average solar production (by day) of a certain area (zipcode) or the closest area in case no values are available
 
 ## Queries
+Here is a description of all SQL queries that are implemented in files of the `queries/` folder.
+
 
 **_funfact.js_**  :
 
@@ -49,17 +53,17 @@ http://localhost:9000/api/solarzip/:id : GET - To get the average solar producti
   
 **_solar.js_**  :
 
-  - elec_cons_solar_monthly : Returns the
+  - `elec_cons_solar_monthly` Returns the average *monthly* electric consumption of customers having solar panels.
   
-  - elec_cons_nonsolar_monthly :
+  - `elec_cons_nonsolar_monthly` Returns the average *monthly* electric consumption of customers that don't have solar panels.
   
-  - elec_cons_solar_weekly :
+  - `elec_cons_solar_weekly` Returns the average *weekly* electric consumption of customers having solar panels.
   
-  - elec_cons_nonsolar_weekly :
+  - `elec_cons_nonsolar_weekly` Returns the average *weekly* electric consumption of customers that don't have solar panels.
   
-  - elec_cons_solar_daily :
+  - `elec_cons_solar_daily` Returns the average *daily* electric consumption of customers having solar panels.
   
-  - elec_cons_nonsolar_daily :
+  - `elec_cons_nonsolar_daily` Returns the average *daily* electric consumption of customers that don't have solar panels.
 
 ## License
 ![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)
