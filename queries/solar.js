@@ -1,3 +1,4 @@
+/* Deployment and database connection pool initialization*/
 var SQL = require('sql-template-strings')
 const Pool = require('pg').Pool
 
@@ -25,6 +26,7 @@ const pool = new Pool({
   port: 5432
 })*/
 
+/* Queries declaration */
 const elec_cons_solar_monthly = (SQL
 `select datepart, avg(sum_month) as avg_cons_solar
 from (SELECT t1.customer_id, extract(month from t1.date) as datepart, sum(t1.value) as sum_month 
@@ -117,6 +119,12 @@ on elec_t.customer_id = non_solar_t.customer_id \
 group by datepart \
 order by datepart"
 
+/**
+ *  Returns the average solar production by month
+ * 
+ * @param {request sent from the server} request 
+ * @param {response sent back to the server} response 
+ */
 
 const getSolarMonthly = (request, response) => {
   var nonsolar_data;
@@ -147,6 +155,13 @@ const getSolarMonthly = (request, response) => {
   })
 };
 
+/**
+ *  Returns the average solar production by week
+ * 
+ * @param {request sent from the server} request 
+ * @param {response sent back to the server} response 
+ */
+
 const getSolarWeekly = (request, response) => {
   var nonsolar_data;
   // final output data contain entries with date, solar-cons, nonsolar-cons
@@ -176,6 +191,13 @@ const getSolarWeekly = (request, response) => {
     })
   })
 };
+
+/**
+ *  Returns the average solar production by day
+ * 
+ * @param {request sent from the server} request 
+ * @param {response sent back to the server} response 
+ */
 
 const getSolarDaily = (request, response) => {
   var nonsolar_data;

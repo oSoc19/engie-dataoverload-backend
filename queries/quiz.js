@@ -1,3 +1,4 @@
+/* Deployment and database connection pool initialization*/
 const Pool = require('pg').Pool
 const url = require('url')
  
@@ -25,6 +26,15 @@ const pool = new Pool({
 
 const http_request = require('request');
 
+/**
+ *  Returns the distance between 2 areas in km
+ * 
+ * @param {latitude of the first area} lat1 
+ * @param {longitude of the first area} lon1 
+ * @param {latitude of the second area} lat2 
+ * @param {longitude of the second area} lon2 
+ */
+
 function getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
     var R = 6371; // Radius of the earth in km
     var dLat = deg2rad(lat2 - lat1);  // deg2rad below
@@ -38,9 +48,22 @@ function getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
     return d;
 }
 
+
+/**
+ * Returns the radiant converted value
+ * 
+ * @param {degree} deg 
+ */
 function deg2rad(deg) {
     return deg * (Math.PI / 180)
 }
+
+/**
+ * Returns the solar production depending on the zipcode
+ * 
+ * @param {request sent from the server} request 
+ * @param {response sent back to the server} response 
+ */
 
 const getSolarProdZip = (request, response) => {
     let zip = request.params.id;
